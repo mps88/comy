@@ -1,0 +1,200 @@
+{
+  "input": {
+    "workflow": {
+      "6": {
+        "inputs": {
+          "text": "Amateur photo, low-angle wide shot capturing a chaotic moment.\n\nSubject: A 22-year-old waitress with a pale, porcelain complexion and messy, chin-length dark wavy hair that looks slightly disheveled. She has heavy eyelids and an intense, detached stare directed right at the lens. Her body type is slender and angular.\n\nOutfit & Action: She is wearing a retro red-and-white vertical striped button-up uniform shirt that fits somewhat loosely, with a crisp white waist apron tied around her hips. A vintage white paper forage cap sits crookedly on her head. She is leaning heavily on a white laminate table with one hand, while the other holds a glass coffee carafe, pouring dark coffee that is aggressively overflowing a beige ceramic mug, creating a large, messy puddle of brown liquid spreading across the table surface.\n\nSetting: A cluttered, retro-style American diner. In the background, a blurred red neon sign reads \"DINER\" and \"FAST LUNCH.\" The scene includes chrome details, quilted stainless steel walls, red vinyl bar stools, and typical diner clutter like napkin dispensers and condiment bottles.\n\nLighting & Atmosphere: Harsh, direct camera flash lighting typical of early 2000s digital cameras. The flash creates hard shadows behind the subject and highlights the glossy texture of the spilling coffee and the sheen on the vinyl seats. The background is dimly lit by the warm, saturated glow of the neon signs, creating a raw, gritty, and candid \"snapshot\" aesthetic with visible film grain.",
+          "clip": [
+            "55",
+            1
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "CLIP Text Encode (Positive Prompt)"
+        }
+      },
+      "8": {
+        "inputs": {
+          "samples": [
+            "52",
+            0
+          ],
+          "vae": [
+            "40",
+            0
+          ]
+        },
+        "class_type": "VAEDecode",
+        "_meta": {
+          "title": "VAEDecode"
+        }
+      },
+      "9": {
+        "inputs": {
+          "filename_prefix": "Z-Image/Z-Image",
+          "images": [
+            "8",
+            0
+          ]
+        },
+        "class_type": "SaveImage",
+        "_meta": {
+          "title": "SaveImage"
+        }
+      },
+      "27": {
+        "inputs": {
+          "width": [
+            "41",
+            0
+          ],
+          "height": [
+            "41",
+            1
+          ],
+          "batch_size": 1
+        },
+        "class_type": "EmptySD3LatentImage",
+        "_meta": {
+          "title": "EmptySD3LatentImage"
+        }
+      },
+      "33": {
+        "inputs": {
+          "text": "",
+          "clip": [
+            "55",
+            1
+          ]
+        },
+        "class_type": "CLIPTextEncode",
+        "_meta": {
+          "title": "CLIP Text Encode (Negative Prompt)"
+        }
+      },
+      "38": {
+        "inputs": {
+          "filename": "z_image_turbo_bf16.safetensors"
+        },
+        "class_type": "UNETLoader",
+        "_meta": {
+          "title": "UNETLoader"
+        }
+      },
+      "39": {
+        "inputs": {
+          "filename": "qwen_3_4b.safetensors"
+        },
+        "class_type": "CLIPLoader",
+        "_meta": {
+          "title": "CLIPLoader"
+        }
+      },
+      "40": {
+        "inputs": {
+          "filename": "z-image-turbo-vae.safetensors"
+        },
+        "class_type": "VAELoader",
+        "_meta": {
+          "title": "VAELoader"
+        }
+      },
+      "41": {
+        "inputs": {
+          "filename": "2.0"
+        },
+        "class_type": "FluxResolutionNode",
+        "_meta": {
+          "title": "FluxResolutionNode"
+        }
+      },
+      "43": {
+        "inputs": {
+          "conditioning": [
+            "33",
+            0
+          ]
+        },
+        "class_type": "ConditioningZeroOut",
+        "_meta": {
+          "title": "ConditioningZeroOut"
+        }
+      },
+      "52": {
+        "inputs": {
+          "value": 0.5,
+          "model": [
+            "55",
+            0
+          ],
+          "positive": [
+            "6",
+            0
+          ],
+          "negative": [
+            "43",
+            0
+          ],
+          "latent_image": [
+            "27",
+            0
+          ],
+          "sigmas": [
+            "53",
+            0
+          ]
+        },
+        "class_type": "ClownsharKSampler_Beta",
+        "_meta": {
+          "title": "ClownsharKSampler_Beta"
+        }
+      },
+      "53": {
+        "inputs": {
+          "value": 0.996,
+          "sigmas": [
+            "54",
+            0
+          ]
+        },
+        "class_type": "Sigmas Rescale",
+        "_meta": {
+          "title": "Sigmas Rescale"
+        }
+      },
+      "54": {
+        "inputs": {
+          "value": 20,
+          "model": [
+            "55",
+            0
+          ]
+        },
+        "class_type": "BetaSamplingScheduler",
+        "_meta": {
+          "title": "BetaSamplingScheduler"
+        }
+      },
+      "55": {
+        "inputs": {
+          "lora_name": "nicegirls_Zimage.safetensors",
+          "strength_model": 1,
+          "strength_clip": 1,
+          "model": [
+            "38",
+            0
+          ],
+          "clip": [
+            "39",
+            0
+          ]
+        },
+        "class_type": "LoraLoader",
+        "_meta": {
+          "title": "LoraLoader"
+        }
+      }
+    }
+  }
+}
